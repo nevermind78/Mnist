@@ -4,6 +4,7 @@
 
 
 ### Architecture
+
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffd8d8'}}}%%
 
