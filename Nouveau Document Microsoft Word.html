@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture du Modèle MNIST</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .layer {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .layer-header {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .params {
+            margin-left: 20px;
+        }
+        .param {
+            margin-bottom: 5px;
+        }
+        .weights {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .tensor {
+            font-family: monospace;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Architecture du Modèle CNN pour MNIST</h1>
+        
+        <div class="layer">
+            <div class="layer-header">Couche d'Entrée (InputLayer)</div>
+            <div class="params">
+                <div class="param"><strong>Type de données d'entrée :</strong> float32</div>
+                <div class="param"><strong>Forme d'entrée :</strong> (28, 28, 1) [images MNIST en niveaux de gris]</div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335588; color: white;">Première Couche de Convolution (Conv2D)</div>
+            <div class="params">
+                <div class="param"><strong>Filtres :</strong> 32</div>
+                <div class="param"><strong>Taille du noyau :</strong> 3×3</div>
+                <div class="param"><strong>Padding :</strong> same</div>
+                <div class="param"><strong>Stride :</strong> 1×1</div>
+                <div class="param"><strong>Fonction d'activation :</strong> ReLU</div>
+                
+                <div class="weights">
+                    <div class="param"><strong>Poids du noyau :</strong> <span class="tensor">float32[3,3,1,32]</span> (288 paramètres)</div>
+                    <div class="param"><strong>Biais :</strong> <span class="tensor">float32[32]</span> (32 paramètres)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335544; color: white;">Première Couche de MaxPooling (MaxPooling2D)</div>
+            <div class="params">
+                <div class="param"><strong>Taille de la fenêtre :</strong> 2×2</div>
+                <div class="param"><strong>Stride :</strong> 2×2</div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335544; color: white;">Normalisation par Lots (BatchNormalization)</div>
+            <div class="params">
+                <div class="weights">
+                    <div class="param"><strong>Gamma :</strong> <span class="tensor">float32[32]</span> (32 paramètres)</div>
+                    <div class="param"><strong>Bêta :</strong> <span class="tensor">float32[32]</span> (32 paramètres)</div>
+                    <div class="param"><strong>Moyenne mobile :</strong> <span class="tensor">float32[32]</span></div>
+                    <div class="param"><strong>Variance mobile :</strong> <span class="tensor">float32[32]</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335588; color: white;">Deuxième Couche de Convolution (Conv2D)</div>
+            <div class="params">
+                <div class="param"><strong>Filtres :</strong> 64</div>
+                <div class="param"><strong>Taille du noyau :</strong> 3×3</div>
+                <div class="param"><strong>Padding :</strong> same</div>
+                <div class="param"><strong>Stride :</strong> 1×1</div>
+                <div class="param"><strong>Fonction d'activation :</strong> ReLU</div>
+                
+                <div class="weights">
+                    <div class="param"><strong>Poids du noyau :</strong> <span class="tensor">float32[3,3,32,64]</span> (18,432 paramètres)</div>
+                    <div class="param"><strong>Biais :</strong> <span class="tensor">float32[64]</span> (64 paramètres)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335544; color: white;">Deuxième Couche de MaxPooling (MaxPooling2D)</div>
+            <div class="params">
+                <div class="param"><strong>Taille de la fenêtre :</strong> 2×2</div>
+                <div class="param"><strong>Stride :</strong> 2×2</div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335544; color: white;">Normalisation par Lots (BatchNormalization)</div>
+            <div class="params">
+                <div class="weights">
+                    <div class="param"><strong>Gamma :</strong> <span class="tensor">float32[64]</span> (64 paramètres)</div>
+                    <div class="param"><strong>Bêta :</strong> <span class="tensor">float32[64]</span> (64 paramètres)</div>
+                    <div class="param"><strong>Moyenne mobile :</strong> <span class="tensor">float32[64]</span></div>
+                    <div class="param"><strong>Variance mobile :</strong> <span class="tensor">float32[64]</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #6c4f47; color: white;">Couche de Mise à Plat (Flatten)</div>
+            <div class="params">
+                <div class="param">Transforme les caractéristiques 3D en vecteur 1D pour les couches denses</div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335588; color: white;">Première Couche Dense (Dense)</div>
+            <div class="params">
+                <div class="param"><strong>Unités :</strong> 256</div>
+                <div class="param"><strong>Fonction d'activation :</strong> SELU</div>
+                
+                <div class="weights">
+                    <div class="param"><strong>Poids :</strong> <span class="tensor">float32[3136,256]</span> (802,816 paramètres)</div>
+                    <div class="param"><strong>Biais :</strong> <span class="tensor">float32[256]</span> (256 paramètres)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #454770; color: white;">Couche de Dropout</div>
+            <div class="params">
+                <div class="param"><strong>Taux de dropout :</strong> 0.2 (20% des neurones désactivés aléatoirement)</div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335544; color: white;">Normalisation par Lots (BatchNormalization)</div>
+            <div class="params">
+                <div class="weights">
+                    <div class="param"><strong>Gamma :</strong> <span class="tensor">float32[256]</span> (256 paramètres)</div>
+                    <div class="param"><strong>Bêta :</strong> <span class="tensor">float32[256]</span> (256 paramètres)</div>
+                    <div class="param"><strong>Moyenne mobile :</strong> <span class="tensor">float32[256]</span></div>
+                    <div class="param"><strong>Variance mobile :</strong> <span class="tensor">float32[256]</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335588; color: white;">Deuxième Couche Dense (Dense)</div>
+            <div class="params">
+                <div class="param"><strong>Unités :</strong> 64</div>
+                <div class="param"><strong>Fonction d'activation :</strong> ReLU</div>
+                
+                <div class="weights">
+                    <div class="param"><strong>Poids :</strong> <span class="tensor">float32[256,64]</span> (16,384 paramètres)</div>
+                    <div class="param"><strong>Biais :</strong> <span class="tensor">float32[64]</span> (64 paramètres)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #454770; color: white;">Couche de Dropout</div>
+            <div class="params">
+                <div class="param"><strong>Taux de dropout :</strong> 0.1 (10% des neurones désactivés aléatoirement)</div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335544; color: white;">Normalisation par Lots (BatchNormalization)</div>
+            <div class="params">
+                <div class="weights">
+                    <div class="param"><strong>Gamma :</strong> <span class="tensor">float32[64]</span> (64 paramètres)</div>
+                    <div class="param"><strong>Bêta :</strong> <span class="tensor">float32[64]</span> (64 paramètres)</div>
+                    <div class="param"><strong>Moyenne mobile :</strong> <span class="tensor">float32[64]</span></div>
+                    <div class="param"><strong>Variance mobile :</strong> <span class="tensor">float32[64]</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layer">
+            <div class="layer-header" style="background-color: #335588; color: white;">Couche de Sortie (Dense)</div>
+            <div class="params">
+                <div class="param"><strong>Unités :</strong> 10 (correspond aux 10 classes de chiffres MNIST)</div>
+                <div class="param"><strong>Fonction d'activation :</strong> Softmax (pour la classification multi-classes)</div>
+                
+                <div class="weights">
+                    <div class="param"><strong>Poids :</strong> <span class="tensor">float32[64,10]</span> (640 paramètres)</div>
+                    <div class="param"><strong>Biais :</strong> <span class="tensor">float32[10]</span> (10 paramètres)</div>
+                </div>
+            </div>
+        </div>
+        
+        <h2>Résumé des Paramètres</h2>
+        <ul>
+            <li><strong>Total des paramètres :</strong> ~839,000</li>
+            <li><strong>Paramètres entraînables :</strong> ~838,000</li>
+            <li><strong>Paramètres non-entraînables :</strong> ~1,000 (moyennes et variances mobiles)</li>
+        </ul>
+    </div>
+</body>
+</html>
