@@ -1,0 +1,9 @@
+streamlit==1.45.0
+Pillow==9.3.0
+pandas==1.5.2
+streamlit-drawable-canvas==0.9.3
+h5py==3.13.0  # Pour charger les modèles .keras
+tensorflow-cpu==2.19.0  # Version allégée sans GPU
+keras==3.9.2
+numpy==1.26.4
+Pillow
